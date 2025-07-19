@@ -1,144 +1,274 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>My Multi Tool App</title>
-
-  <!-- ✅ Internal CSS -->
   <style>
-    body {
-      font-family: sans-serif;
-      background: #f2f2f2;
-      text-align: center;
-      padding: 20px;
+    :root {
+      --primary: #2563eb;
+      --secondary: #f1f5f9;
+      --accent: #4CAF50;
+      --text: #222;
+      --radius: 10px;
+      --shadow: 0 4px 24px rgba(0,0,0,0.08);
     }
-    h1 {
-      color: #333;
+    body {
+      margin: 0;
+      padding: 0;
+      font-family: 'Segoe UI', Arial, sans-serif;
+      background: var(--secondary);
+      color: var(--text);
+    }
+    .container {
+      display: flex;
+      min-height: 100vh;
+    }
+    .sidebar {
+      width: 320px;
+      background: #fff;
+      box-shadow: var(--shadow);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 30px 10px;
+      gap: 30px;
+    }
+    .main-content {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: flex-start;
+      padding: 40px 10px 20px 10px;
+      min-width: 0;
+    }
+    header {
+      width: 100%;
+      background: var(--primary);
+      color: #fff;
+      padding: 30px 0 20px 0;
+      text-align: center;
+      box-shadow: var(--shadow);
+    }
+    header h1 {
+      margin: 0;
+      font-size: 2.5rem;
+      font-weight: 700;
+      letter-spacing: 1px;
     }
     .tool-list {
-      margin-top: 30px;
+      display: flex;
+      gap: 20px;
+      margin: 30px 0 20px 0;
+      flex-wrap: wrap;
+      justify-content: center;
     }
     .tool-list button {
-      display: block;
       background: #fff;
-      margin: 10px auto;
-      padding: 15px;
-      width: 220px;
-      border: none;
-      border-radius: 5px;
-      box-shadow: 0 0 5px rgba(0,0,0,0.1);
+      color: var(--primary);
+      border: 2px solid var(--primary);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      padding: 15px 30px;
+      font-size: 1.1rem;
+      font-weight: 600;
       cursor: pointer;
-      font-size: 16px;
+      transition: background 0.2s, color 0.2s;
     }
     .tool-list button:hover {
-      background: #eaeaea;
+      background: var(--primary);
+      color: #fff;
     }
     .tool-container {
       display: none;
-      margin-top: 20px;
       background: #fff;
-      padding: 20px;
-      border-radius: 5px;
-      box-shadow: 0 0 5px rgba(0,0,0,0.1);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      padding: 30px 30px 20px 30px;
+      margin: 0 auto 30px auto;
+      max-width: 400px;
+      width: 100%;
+      text-align: left;
+      animation: fadeIn 0.4s;
+    }
+    .tool-container.active {
+      display: block;
+    }
+    .tool-container h2 {
+      margin-top: 0;
+      color: var(--primary);
+      font-size: 1.4rem;
     }
     input, select {
-      padding: 10px;
-      margin: 5px;
-      width: 80%;
-      max-width: 300px;
-      border: 1px solid #ccc;
-      border-radius: 3px;
+      padding: 12px;
+      margin: 10px 0;
+      width: 100%;
+      border: 1px solid #d1d5db;
+      border-radius: var(--radius);
+      font-size: 1rem;
+      box-sizing: border-box;
+      background: #f9fafb;
+      transition: border 0.2s;
+    }
+    input:focus, select:focus {
+      border: 1.5px solid var(--primary);
+      outline: none;
     }
     button.calc {
-      background: #4CAF50;
-      color: white;
-      width: auto;
-      padding: 10px 20px;
-    }
-    #result {
+      background: var(--accent);
+      color: #fff;
+      border: none;
+      border-radius: var(--radius);
+      padding: 12px 28px;
+      font-size: 1.1rem;
+      font-weight: 600;
       margin-top: 10px;
+      cursor: pointer;
+      box-shadow: var(--shadow);
+      transition: background 0.2s;
+    }
+    button.calc:hover {
+      background: #388e3c;
+    }
+    #result, #bmiResult, #ageResult, #convertResult, #passwordResult {
+      margin-top: 15px;
       font-weight: bold;
+      color: var(--primary);
+      font-size: 1.1rem;
     }
     .ad-container {
-      margin: 20px 0;
+      width: 300px;
+      min-height: 250px;
+      margin: 0 auto 20px auto;
+      background: #f9fafb;
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+    }
+    @media (max-width: 1100px) {
+      .sidebar {
+        display: none;
+      }
+      .container {
+        flex-direction: column;
+      }
+      .main-content {
+        padding: 30px 5px 10px 5px;
+      }
+    }
+    @media (max-width: 600px) {
+      .main-content {
+        padding: 10px 2px;
+      }
+      .tool-container {
+        padding: 15px 5px 10px 5px;
+        max-width: 98vw;
+      }
+      .tool-list {
+        gap: 10px;
+      }
+    }
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
     }
   </style>
 </head>
 <body>
-  <h1>🛠️ My Multi Tool App</h1>
-
-  <!-- ✅ Adsterra Banner Ad -->
-  <div class="ad-container">
-    <script async="async" data-cfasync="false" src="//pl27205933.profitableratecpm.com/993503996c5366dfc79168c7104c8184/invoke.js"></script>
-    <div id="container-993503996c5366dfc79168c7104c8184"></div>
+  <header>
+    <h1>🛠️ My Multi Tool App</h1>
+    <p style="margin: 10px 0 0 0; font-size: 1.1rem; color: #e0e7ef;">All-in-one quick tools with a modern look</p>
+  </header>
+  <div class="container">
+    <!-- Left Sidebar Ad -->
+    <aside class="sidebar">
+      <div class="ad-container">
+        <script async="async" data-cfasync="false" src="//pl27205933.profitableratecpm.com/993503996c5366dfc79168c7104c8184/invoke.js"></script>
+        <div id="container-993503996c5366dfc79168c7104c8184"></div>
+      </div>
+      <div class="ad-container">
+        <script type="text/javascript">
+          atOptions = {
+            'key' : 'a8502423a50f6e43905271a9a3ae4ac8',
+            'format' : 'iframe',
+            'height' : 250,
+            'width' : 300,
+            'params' : {}
+          };
+        </script>
+        <script type="text/javascript" src="//www.highperformanceformat.com/a8502423a50f6e43905271a9a3ae4ac8/invoke.js"></script>
+      </div>
+    </aside>
+    <main class="main-content">
+      <div class="tool-list">
+        <button onclick="showTool('bmi')">BMI Calculator</button>
+        <button onclick="showTool('age')">Age Calculator</button>
+        <button onclick="showTool('converter')">Unit Converter</button>
+        <button onclick="showTool('password')">Password Generator</button>
+      </div>
+      <div class="tool-container" id="bmi">
+        <h2>BMI Calculator</h2>
+        <input type="number" id="weight" placeholder="Weight (kg)" /><br/>
+        <input type="number" id="height" placeholder="Height (cm)" /><br/>
+        <button class="calc" onclick="calculateBMI()">Calculate BMI</button>
+        <div id="bmiResult"></div>
+      </div>
+      <div class="tool-container" id="age">
+        <h2>Age Calculator</h2>
+        <input type="date" id="birthdate" /><br/>
+        <button class="calc" onclick="calculateAge()">Calculate Age</button>
+        <div id="ageResult"></div>
+      </div>
+      <div class="tool-container" id="converter">
+        <h2>Unit Converter (cm to inch)</h2>
+        <input type="number" id="cm" placeholder="Centimeters" /><br/>
+        <button class="calc" onclick="convertCMtoInch()">Convert</button>
+        <div id="convertResult"></div>
+      </div>
+      <div class="tool-container" id="password">
+        <h2>Password Generator</h2>
+        <input type="number" id="passLength" placeholder="Password Length" /><br/>
+        <button class="calc" onclick="generatePassword()">Generate</button>
+        <div id="passwordResult"></div>
+      </div>
+    </main>
+    <!-- Right Sidebar Ad -->
+    <aside class="sidebar">
+      <div class="ad-container">
+        <script async="async" data-cfasync="false" src="//pl27205933.profitableratecpm.com/993503996c5366dfc79168c7104c8184/invoke.js"></script>
+        <div id="container-993503996c5366dfc79168c7104c8184"></div>
+      </div>
+      <div class="ad-container">
+        <script type="text/javascript">
+          atOptions = {
+            'key' : 'a8502423a50f6e43905271a9a3ae4ac8',
+            'format' : 'iframe',
+            'height' : 250,
+            'width' : 300,
+            'params' : {}
+          };
+        </script>
+        <script type="text/javascript" src="//www.highperformanceformat.com/a8502423a50f6e43905271a9a3ae4ac8/invoke.js"></script>
+      </div>
+    </aside>
   </div>
-
-  <!-- ✅ Additional Ad Script -->
-  <div class="ad-container">
-    <script type="text/javascript">
-      atOptions = {
-        'key' : 'a8502423a50f6e43905271a9a3ae4ac8',
-        'format' : 'iframe',
-        'height' : 250,
-        'width' : 300,
-        'params' : {}
-      };
-    </script>
-    <script type="text/javascript" src="//www.highperformanceformat.com/a8502423a50f6e43905271a9a3ae4ac8/invoke.js"></script>
-  </div>
-
-  <!-- ✅ Tool selection buttons -->
-  <div class="tool-list">
-    <button onclick="showTool('bmi')">BMI Calculator</button>
-    <button onclick="showTool('age')">Age Calculator</button>
-    <button onclick="showTool('converter')">Unit Converter</button>
-    <button onclick="showTool('password')">Password Generator</button>
-  </div>
-
-  <!-- ✅ BMI Calculator -->
-  <div class="tool-container" id="bmi">
-    <h2>BMI Calculator</h2>
-    <input type="number" id="weight" placeholder="Weight (kg)" /><br/>
-    <input type="number" id="height" placeholder="Height (cm)" /><br/>
-    <button class="calc" onclick="calculateBMI()">Calculate BMI</button>
-    <div id="bmiResult"></div>
-  </div>
-
-  <!-- ✅ Age Calculator -->
-  <div class="tool-container" id="age">
-    <h2>Age Calculator</h2>
-    <input type="date" id="birthdate" /><br/>
-    <button class="calc" onclick="calculateAge()">Calculate Age</button>
-    <div id="ageResult"></div>
-  </div>
-
-  <!-- ✅ Unit Converter -->
-  <div class="tool-container" id="converter">
-    <h2>Unit Converter (cm to inch)</h2>
-    <input type="number" id="cm" placeholder="Centimeters" /><br/>
-    <button class="calc" onclick="convertCMtoInch()">Convert</button>
-    <div id="convertResult"></div>
-  </div>
-
-  <!-- ✅ Password Generator -->
-  <div class="tool-container" id="password">
-    <h2>Password Generator</h2>
-    <input type="number" id="passLength" placeholder="Password Length" /><br/>
-    <button class="calc" onclick="generatePassword()">Generate</button>
-    <div id="passwordResult"></div>
-  </div>
-
-  <!-- ✅ Internal JavaScript -->
   <script>
     function showTool(toolId) {
       const tools = document.getElementsByClassName('tool-container');
       for (let i = 0; i < tools.length; i++) {
-        tools[i].style.display = 'none';
+        tools[i].classList.remove('active');
       }
-      document.getElementById(toolId).style.display = 'block';
+      document.getElementById(toolId).classList.add('active');
     }
-
+    // Show first tool by default
+    window.onload = function() {
+      showTool('bmi');
+    };
     function calculateBMI() {
       const weight = document.getElementById("weight").value;
       const height = document.getElementById("height").value / 100;
@@ -149,7 +279,6 @@
         document.getElementById("bmiResult").innerText = "Please enter both weight and height.";
       }
     }
-
     function calculateAge() {
       const birthdate = document.getElementById("birthdate").value;
       if(birthdate){
@@ -165,7 +294,6 @@
         document.getElementById("ageResult").innerText = "Please select your birth date.";
       }
     }
-
     function convertCMtoInch() {
       const cm = document.getElementById("cm").value;
       if(cm){
@@ -175,7 +303,6 @@
         document.getElementById("convertResult").innerText = "Please enter centimeters.";
       }
     }
-
     function generatePassword() {
       const length = document.getElementById("passLength").value;
       const chars = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!@#$%^&*()";
