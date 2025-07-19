@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>My Multi Tool App</title>
+
+  <!-- ✅ Internal CSS -->
+  <style>
+    body {
+      font-family: sans-serif;
+      background: #f2f2f2;
+      text-align: center;
+      padding: 20px;
+    }
+    h1 {
+      color: #333;
+    }
+    .tool-list {
+      margin-top: 30px;
+    }
+    .tool-list button {
+      display: block;
+      background: #fff;
+      margin: 10px auto;
+      padding: 15px;
+      width: 220px;
+      border: none;
+      border-radius: 5px;
+      box-shadow: 0 0 5px rgba(0,0,0,0.1);
+      cursor: pointer;
+      font-size: 16px;
+    }
+    .tool-list button:hover {
+      background: #eaeaea;
+    }
+    .tool-container {
+      display: none;
+      margin-top: 20px;
+      background: #fff;
+      padding: 20px;
+      border-radius: 5px;
+      box-shadow: 0 0 5px rgba(0,0,0,0.1);
+    }
+    input, select {
+      padding: 10px;
+      margin: 5px;
+      width: 80%;
+      max-width: 300px;
+      border: 1px solid #ccc;
+      border-radius: 3px;
+    }
+    button.calc {
+      background: #4CAF50;
+      color: white;
+      width: auto;
+      padding: 10px 20px;
+    }
+    #result {
+      margin-top: 10px;
+      font-weight: bold;
+    }
+    .ad-container {
+      margin: 20px 0;
+    }
+  </style>
+</head>
+<body>
+  <h1>🛠️ My Multi Tool App</h1>
+
+  <!-- ✅ Adsterra Banner Ad -->
+  <div class="ad-container">
+    <script async="async" data-cfasync="false" src="//pl27205933.profitableratecpm.com/993503996c5366dfc79168c7104c8184/invoke.js"></script>
+    <div id="container-993503996c5366dfc79168c7104c8184"></div>
+  </div>
+
+  <!-- ✅ Tool selection buttons -->
+  <div class="tool-list">
+    <button onclick="showTool('bmi')">BMI Calculator</button>
+    <button onclick="showTool('age')">Age Calculator</button>
+    <button onclick="showTool('converter')">Unit Converter</button>
+    <button onclick="showTool('password')">Password Generator</button>
+  </div>
+
+  <!-- ✅ BMI Calculator -->
+  <div class="tool-container" id="bmi">
+    <h2>BMI Calculator</h2>
+    <input type="number" id="weight" placeholder="Weight (kg)" /><br/>
+    <input type="number" id="height" placeholder="Height (cm)" /><br/>
+    <button class="calc" onclick="calculateBMI()">Calculate BMI</button>
+    <div id="bmiResult"></div>
+  </div>
+
+  <!-- ✅ Age Calculator -->
+  <div class="tool-container" id="age">
+    <h2>Age Calculator</h2>
+    <input type="date" id="birthdate" /><br/>
+    <button class="calc" onclick="calculateAge()">Calculate Age</button>
+    <div id="ageResult"></div>
+  </div>
+
+  <!-- ✅ Unit Converter -->
+  <div class="tool-container" id="converter">
+    <h2>Unit Converter (cm to inch)</h2>
+    <input type="number" id="cm" placeholder="Centimeters" /><br/>
+    <button class="calc" onclick="convertCMtoInch()">Convert</button>
+    <div id="convertResult"></div>
+  </div>
+
+  <!-- ✅ Password Generator -->
+  <div class="tool-container" id="password">
+    <h2>Password Generator</h2>
+    <input type="number" id="passLength" placeholder="Password Length" /><br/>
+    <button class="calc" onclick="generatePassword()">Generate</button>
+    <div id="passwordResult"></div>
+  </div>
+
+  <!-- ✅ Internal JavaScript -->
+  <script>
+    function showTool(toolId) {
+      const tools = document.getElementsByClassName('tool-container');
+      for (let i = 0; i < tools.length; i++) {
+        tools[i].style.display = 'none';
+      }
+      document.getElementById(toolId).style.display = 'block';
+    }
+
+    function calculateBMI() {
+      const weight = document.getElementById("weight").value;
+      const height = document.getElementById("height").value / 100;
+      if(weight && height){
+        const bmi = weight / (height * height);
+        document.getElementById("bmiResult").innerText = "Your BMI is " + bmi.toFixed(2);
+      } else {
+        document.getElementById("bmiResult").innerText = "Please enter both weight and height.";
+      }
+    }
+
+    function calculateAge() {
+      const birthdate = document.getElementById("birthdate").value;
+      if(birthdate){
+        const today = new Date();
+        const birth = new Date(birthdate);
+        let age = today.getFullYear() - birth.getFullYear();
+        const m = today.getMonth() - birth.getMonth();
+        if (m < 0 || (m === 0 && today.getDate() < birth.getDate())) {
+          age--;
+        }
+        document.getElementById("ageResult").innerText = "Your age is " + age + " years.";
+      } else {
+        document.getElementById("ageResult").innerText = "Please select your birth date.";
+      }
+    }
+
+    function convertCMtoInch() {
+      const cm = document.getElementById("cm").value;
+      if(cm){
+        const inch = cm * 0.393701;
+        document.getElementById("convertResult").innerText = cm + " cm = " + inch.toFixed(2) + " inches.";
+      } else {
+        document.getElementById("convertResult").innerText = "Please enter centimeters.";
+      }
+    }
+
+    function generatePassword() {
+      const length = document.getElementById("passLength").value;
+      const chars = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!@#$%^&*()";
+      let password = "";
+      if(length){
+        for (let i = 0; i < length; i++) {
+          password += chars.charAt(Math.floor(Math.random() * chars.length));
+        }
+        document.getElementById("passwordResult").innerText = "Generated Password: " + password;
+      } else {
+        document.getElementById("passwordResult").innerText = "Please enter password length.";
+      }
+    }
+  </script>
+</body>
+</html>
