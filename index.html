@@ -27,12 +27,13 @@
     main {
       padding: 20px;
       text-align: center;
+      flex: 1;
     }
     .card {
       background: #fafafa;
       border-radius: 10px;
       padding: 20px;
-      box-shadow: 0 2px 6px rgba(0,0,0,0.05);
+      box-shadow: 0 2px 6px rgba(0,0,0,0.08);
       margin-bottom: 20px;
     }
     .ad-slot {
@@ -40,7 +41,12 @@
       display: flex;
       align-items: center;
       justify-content: center;
+      min-height: 90px; /* Ad space fix */
+      width: 100%;
+      max-width: 728px;
       background: #fff;
+      border: 1px dashed #ddd;
+      border-radius: 6px;
     }
     .footer {
       padding: 12px;
@@ -49,6 +55,7 @@
       border-top: 1px solid #eee;
       text-align: center;
       width: 100%;
+      background: #fafafa;
     }
   </style>
 </head>
@@ -58,21 +65,16 @@
   <main>
     <div class="card">
       <h2>Welcome 👋</h2>
-      <p>यह simple UI design है जिसमें सिर्फ़ एक Adsterra ad slot है।</p>
+      <p>यह simple UI design है जिसमें Adsterra ad slot है।</p>
     </div>
 
     <div class="ad-slot">
-   <script type='text/javascript' src='//pl27606177.revenuecpmgate.com/a6/fd/26/a6fd26edc8ce44c0df5ba110b6dbb2c2.js'></script>
-      <span style="color:#999;"></span>
+      <!-- Adsterra Code -->
+      <script async type="text/javascript" src="//pl27606177.revenuecpmgate.com/a6/fd/26/a6fd26edc8ce44c0df5ba110b6dbb2c2.js"></script>
     </div>
   </main>
 
   <div class="footer">&copy; 2025 • Simple Multitool</div>
 </body>
 </html>
-
-
-
-
-
 
